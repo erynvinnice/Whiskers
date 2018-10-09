@@ -120,9 +120,9 @@
         android:layout_height="wrap_content"
         android:text="Add Entry"
         android:fontFamily="@font/roboto"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:layout_marginTop="460dp"
-        android:background="#816052" />
+        android:background="#99CCC4" />
 
     <EditText
         android:id="@+id/pet_desc"

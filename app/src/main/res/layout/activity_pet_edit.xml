@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/bgs"
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".EditPetEntry">
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:hint="Pet Name"
+        android:textColorHint="#5E6F6C"
         android:inputType="textPersonName"/>
 
     <EditText
@@ -31,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="145dp"
         android:hint="Breed"
+        android:textColorHint="#5E6F6C"
         android:inputType="text"/>
     <TextView
         android:layout_width="wrap_content"
@@ -80,6 +83,7 @@
         android:layout_marginTop="240dp"
         android:layout_marginLeft="100dp"
         android:hint="MM - DD - YYYY"
+        android:textColorHint="#5E6F6C"
         android:inputType="date"/>
 
     <EditText
@@ -88,6 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="190dp"
         android:hint="Fur Color"
+        android:textColorHint="#5E6F6C"
         android:inputType="text"/>
 
     <EditText
@@ -97,6 +102,7 @@
         android:layout_marginTop="190dp"
         android:layout_marginLeft="170dp"
         android:hint="Eye Color"
+        android:textColorHint="#5E6F6C"
         android:inputType="text"/>
 
     <Button
@@ -105,7 +111,7 @@
         android:layout_height="wrap_content"
         android:text="Edit Pet Entry"
         android:layout_marginTop="450dp"
-        android:background="@drawable/button_pink"
+        android:background="#99CCC4"
         android:onClick="updateEntry"/>
 
     <EditText
@@ -114,6 +120,7 @@
         android:layout_height="86dp"
         android:layout_marginTop="330dp"
         android:hint="Description"
+        android:textColorHint="#5E6F6C"
         android:textAlignment="textStart" />
 
 </RelativeLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#816052"
+    android:background="@drawable/bgs"
     android:padding="16dp"
     tools:context=".StartActivity">
 
@@ -12,18 +12,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:src="@drawable/logoword" />
+        android:src="@drawable/invlogo" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="180dp"
-        android:background="#66493C"
+        android:background="#99CCC4"
         android:fontFamily="@font/roboto"
         android:text="Login Account"
         android:textAllCaps="false"
-        android:textColor="#ffff"
+        android:textColor="#000"
         android:textSize="18sp"
         android:onClick="loginView"/>
 
@@ -33,11 +33,11 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="100dp"
-        android:background="#66493C"
+        android:background="#99CCC4"
         android:fontFamily="@font/roboto"
         android:text="Create An Account"
         android:textAllCaps="false"
-        android:textColor="#ffff"
+        android:textColor="#000"
         android:textSize="18sp"
         android:onClick="signupView"/>
 

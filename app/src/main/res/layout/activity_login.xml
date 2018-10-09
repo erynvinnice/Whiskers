@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#816052"
+    android:background="@drawable/bgs"
     android:padding="16dp"
     tools:context=".LoginActivity">
 
@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="68dp"
-        android:src="@drawable/logoword" />
+        android:src="@drawable/invlogo" />
 
     <EditText
         android:id="@+id/login_email"
@@ -25,10 +25,10 @@
         android:layout_marginTop="240dp"
         android:inputType="textEmailAddress"
         android:hint="Email"
-        android:backgroundTint="#ffff"
-        android:textColorHint="#ffff"
-        android:textColor="#ffff"
-        android:drawableLeft="@drawable/person"
+        android:backgroundTint="#000"
+        android:textColorHint="#000"
+        android:textColor="#000"
+        android:drawableLeft="@drawable/person_blk"
         android:fontFamily="@font/roboto"
         android:paddingLeft="8dp" />
 
@@ -41,10 +41,10 @@
         android:layout_marginTop="300dp"
         android:hint="Password"
         android:inputType="textPassword"
-        android:backgroundTint="#ffff"
-        android:textColorHint="#ffff"
-        android:textColor="#ffff"
-        android:drawableLeft="@drawable/lock"
+        android:backgroundTint="#000"
+        android:textColorHint="#000"
+        android:textColor="#000"
+        android:drawableLeft="@drawable/lock_blk"
         android:fontFamily="@font/roboto"
         android:paddingLeft="8dp" />
 
@@ -56,11 +56,11 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
-        android:background="#66493C"
+        android:background="#99CCC4"
         android:fontFamily="@font/roboto"
         android:text="Login"
         android:textAllCaps="false"
-        android:textColor="#ffff"
+        android:textColor="#000"
         android:textSize="20sp"
         android:onClick="loginUser"/>
 
@@ -71,7 +71,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="45dp"
         android:text="Create a new account here"
-        android:textColor="#ffff"
+        android:textColor="#000"
         android:textSize="18sp"
         android:onClick="signUpView"/>
 

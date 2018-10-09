@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#66493C</color>
+    <color name="colorPrimaryDark">#50A093</color>
     <color name="colorAccent">#816052</color>
     <color name="navBg">#545454</color>
 
-    <color name="colorthemeblue">#816052</color>
+    <color name="colorthemeblue">#99CCC4</color>
     <color name="colorthemeyellow">#FED68E</color>
     <color name="colorthemeflesh">#E8CBC5</color>
-    <color name="colorthemepink">#816052</color>
+    <color name="colorthemepink">#99CCC4</color>
     <color name="colorthemecheck">#06E83A</color>
     <color name="colorthemewrong">#E9110F</color>
 
 
     <color name="colorthemebrown">#826B63</color>
-
 </resources>

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.whiskersapp.petwhiskers.Model.DistanceLocationAddress;
 import com.example.whiskersapp.petwhiskers.Model.LocationAddress;
 import com.example.whiskersapp.petwhiskers.Model.Pet;
 import com.google.android.gms.common.api.ApiException;
@@ -62,38 +63,34 @@ import static android.os.Looper.getMainLooper;
 public class MapFragment extends Fragment implements OnMapReadyCallback{
     private Marker marker;
     private GoogleMap mMap;
-    private Location mLastLocation;
-    private double latitude, longitude;
     private LocationRequest mLocationRequest;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private long UPDATE_INTERVAL = 10000;  /* 10 secs = 10 * 1000 */
     private long FASTEST_INTERVAL = 1000;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 1000;
-    private Task<LocationSettingsResponse> result;
     protected static final int REQUEST_CHECK_SETTINGS = 2000;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference table_user;
     private DatabaseReference table_pet;
+    private DistanceLocationAddress distanceLocationAddress;
     private LocationAddress locationAddress;
     private LocationResult location;
     private final float distanceKM = 3;
-    private Map<Marker, LocationAddress> markerUserHashMap = new HashMap<Marker, LocationAddress>();
+    private Map<Marker, DistanceLocationAddress> markerUserHashMap = new HashMap<>();
     private BitmapDescriptor icon;
     private LocationCallback locationCallback;
     private FirebaseAuth mAuth;
     private Pet pet;
     private TextView numOfEntries;
     private CircleImageView petImg;
-    private int ctr = 0;
+    private int ctr = 0,numOfUsers;
+    private float distance;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_frag);
-        mapFragment.getMapAsync(this);
-        locationAddress = new LocationAddress();
         return  view;
     }
     @Override
@@ -101,6 +98,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onViewCreated(view, savedInstanceState);
         android.support.v7.widget.Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Map");
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_frag);
+        mapFragment.getMapAsync(this);
+        locationAddress = new LocationAddress();
+        distanceLocationAddress = new DistanceLocationAddress();
+
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -119,34 +122,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             // Use default InfoWindow frame
             @Override
             public View getInfoWindow(Marker arg0) {
-                final LocationAddress userLoc  = markerUserHashMap.get(arg0);
+                final DistanceLocationAddress userLoc  = markerUserHashMap.get(arg0);
                 // Getting view from the layout file info_window_layout
 
                 View v = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
                 petImg = (CircleImageView)v.findViewById(R.id.user_img_info);
+
+                numOfEntries = (TextView)v.findViewById(R.id.num_of_entries);
+
+                numOfEntries.setText(ctr+" Entries");
+
                 table_pet = firebaseDatabase.getReference("pet");
                 table_pet.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                            ctr = 0;
-                                                        for(DataSnapshot children: dataSnapshot.getChildren()){
+                        ctr = 0;
+                        for(DataSnapshot children: dataSnapshot.getChildren()){
 
-                                                                        pet = children.getValue(Pet.class);
-                                                                if(pet.getOwner_id().equals(userLoc.getOwner_id()) && pet.getIsAdopt().equals("no") && pet.getVerStat().equals("1")){
-                                                                       ctr++;
-                                                                    }
-                                                            }
-                                                   }
+                            pet = children.getValue(Pet.class);
+                            if(pet.getOwner_id().equals(userLoc.getOwner_id()) && pet.getIsAdopt().equals("no") && pet.getVerStat().equals("1")){
+                                ctr++;
+                                Log.e("Counter", "numofpets"+ctr);
+                            }
+                        }
+                    }
 
-                            @Override
+                    @Override
                     public void onCancelled(DatabaseError databaseError) {
 
-                                                            }
+                    }
                 });
-
-                                        numOfEntries = (TextView)v.findViewById(R.id.num_of_entries);
-
-                                        numOfEntries.setText(ctr+" Entries");
 
 
                 //       final CircleImageView petImg = (CircleImageView)v.findViewById(R.id.user_img_info);
@@ -186,9 +191,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                LocationAddress userInfo  = markerUserHashMap.get(marker);
+                DistanceLocationAddress userInfo  = markerUserHashMap.get(marker);
                 Intent intent = new Intent(getActivity(), UserPetList.class);
                 intent.putExtra("id", userInfo.getOwner_id());
+                intent.putExtra("distance",userInfo.getDistance());
                 startActivity(intent);
             }
         });
@@ -208,7 +214,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         builder.addLocationRequest(mLocationRequest);
         LocationSettingsRequest locationSettingsRequest = builder.build();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        result = LocationServices.getSettingsClient(getActivity()).checkLocationSettings(locationSettingsRequest);
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getActivity()).checkLocationSettings(locationSettingsRequest);
         result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
             @Override
             public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
@@ -300,7 +306,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         }
     }
     public void getNearbyUser(final LocationResult currentLocationResult){
-
+        numOfUsers = 0;
         table_user = firebaseDatabase.getReference("location");
         table_user.addValueEventListener(new ValueEventListener() {
             @Override
@@ -320,17 +326,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         userLocation.setLatitude(userLatLng.latitude);
                         userLocation.setLongitude(userLatLng.longitude);
 
-                        float distance = currentLocation.distanceTo(userLocation)/1000;
+                        distance = currentLocation.distanceTo(userLocation)/1000;
 
-                        if(distance <= distanceKM){
+                        if( distance <= distanceKM){
+                            String stringDistance = String.format("%.2f", distance);
+                            Log.e("Distance",""+stringDistance);
+                            distanceLocationAddress.setDistance(stringDistance);
+                            distanceLocationAddress.setId(locationAddress.getId());
+                            distanceLocationAddress.setLatitude(locationAddress.getLatitude());
+                            distanceLocationAddress.setLongitude(locationAddress.getLongitude());
+                            distanceLocationAddress.setOwner_id(locationAddress.getOwner_id());
+
                             icon = BitmapDescriptorFactory.fromResource(R.drawable.man_icon);
+
                             marker =  mMap.addMarker(new MarkerOptions()
                                     .position(userLatLng)
                                     .icon(icon));
-                            markerUserHashMap.put(marker,locationAddress);
+                            markerUserHashMap.put(marker,distanceLocationAddress);
                         }
 
-
+                        Log.e("Counter", ""+numOfUsers);
 
 
                     }
@@ -366,7 +381,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         break;
                     case RESULT_CANCELED:
                         // The user was asked to change settings, but chose not to
-                        Log.d("Activity","Canccel");
+                        Log.d("Activity","Cancel");
 
                         Toast.makeText(getContext(), "Permission Denied!", Toast.LENGTH_SHORT).show();
                         break;

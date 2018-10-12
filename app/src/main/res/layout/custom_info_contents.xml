@@ -10,7 +10,7 @@
             android:layout_width="50dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/user"
+            android:src="@drawable/usermanicon"
             android:layout_gravity="center"
             app:civ_border_color="@color/colorPrimaryDark"/>
 

@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment {
     private Button messageBtn;
     private FirebaseAuth mAuth;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,6 +100,7 @@ public class HomeFragment extends Fragment {
                     petname.setText(pet.getPet_name());
                     petbreed.setText(pet.getBreed());
                     petstatus.setText(pet.getStatus());
+                    /*error*/
                     Picasso.with(getContext()).load(pet.getImgUrl())
                             .into(imgPet);
                 }

@@ -87,10 +87,15 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         });
                     } else {
+                        progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Invalid Contact Number: Ex. 09XX or 639XX!", Toast.LENGTH_LONG).show();
                     }
 
-                }
+                }else{
+            progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(), "Please fill in the missing field/s!", Toast.LENGTH_LONG).show();
+        }
+
     }
 
 

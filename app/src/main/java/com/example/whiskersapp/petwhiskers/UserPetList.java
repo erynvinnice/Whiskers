@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.whiskersapp.petwhiskers.Model.Pet;
@@ -29,8 +31,11 @@ public class UserPetList extends AppCompatActivity {
     private FirebaseRecyclerAdapter<Pet, PetListViewHolder> adapter;
     private FirebaseAuth mAuth;
     String id = "";
+    String distance = "";
     Toolbar toolbar;
     TextView petOwnerName;
+    TextView kmDistance;
+    ImageView messageOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +43,16 @@ public class UserPetList extends AppCompatActivity {
         setContentView(R.layout.activity_user_pet_list);
         if(getIntent()!=null){
             id = getIntent().getStringExtra("id");
-            if(!id.isEmpty()){
+            distance = getIntent().getStringExtra("distance");
+            if(!id.isEmpty()&&!distance.isEmpty()){
                 toolbar = (Toolbar) findViewById(R.id.toolbar_user_pet);
                 toolbar.setNavigationIcon(R.drawable.ic_back_24dp);
                 setSupportActionBar(toolbar);
-                petOwnerName = findViewById(R.id.pet_ownerName);
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+                petOwnerName = findViewById(R.id.text_profile_user);
+                kmDistance = findViewById(R.id.text_profile_location);
+                messageOwner = findViewById(R.id.img_message_profile);
+                kmDistance.setText(distance+"km away");
 
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
@@ -51,14 +61,25 @@ public class UserPetList extends AppCompatActivity {
                     }
                 });
 
+
                 recyclerview = findViewById(R.id.UserPetListRV);
                 recyclerview.setLayoutManager(new LinearLayoutManager(this));
                 firebaseDatabase = FirebaseDatabase.getInstance();
                 table_pet_entry = firebaseDatabase.getReference("pet");
                 table_pet_user = firebaseDatabase.getReference("user_account");
 
+
                 mAuth = FirebaseAuth.getInstance();
                 getPetOwnerDetails(id);
+                messageOwner.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                        intent.putExtra("user_one_id", mAuth.getCurrentUser().getUid());
+                        intent.putExtra("user_two_id", id);
+                        startActivity(intent);
+                    }
+                });
                 adapter = new FirebaseRecyclerAdapter<Pet, PetListViewHolder>(
                         Pet.class,
                         R.layout.card_layout,
@@ -111,6 +132,10 @@ public class UserPetList extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 }

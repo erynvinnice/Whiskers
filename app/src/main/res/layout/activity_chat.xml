@@ -8,6 +8,7 @@
     tools:context=".ChatActivity">
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_chat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorthemepink">
@@ -28,7 +29,7 @@
             android:id="@+id/chat_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="?attr/actionBarSize"
+            android:layout_marginTop="?attr/actionBarSize"
             android:scrollbars="vertical"
             android:layout_above="@+id/chat_msg"
             tools:listitem="@layout/cardlayout_chat" />

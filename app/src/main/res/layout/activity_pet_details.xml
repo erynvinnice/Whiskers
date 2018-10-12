@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:fitsSystemWindows="true"
-            app:contentScrim="#0e0d0e"
+            app:contentScrim="@color/colorthemeblue"
             app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -162,7 +162,7 @@
                        <TextView
                            android:layout_height="wrap_content"
                            android:paddingRight="20dp"
-                           android:text="Birthcdate"/>
+                           android:text="Birthdate"/>
                        <TextView
                            android:layout_height="wrap_content"
                            android:text="Lorem Ipsum"

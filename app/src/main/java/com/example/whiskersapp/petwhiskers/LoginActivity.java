@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = pword.getText().toString();
 
         if(email.isEmpty() || password.isEmpty()){
+            progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), "Please fill in the missing field/s",Toast.LENGTH_SHORT).show();
         }else{
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -76,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }
                     } else {
+                        progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Username or Password does not exist!", Toast.LENGTH_LONG).show();
                     }
                 }

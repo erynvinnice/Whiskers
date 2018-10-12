@@ -37,6 +37,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText message;
     private ImageView send;
     private TextView ownerName;
+    private Toolbar toolbar;
     private User user;
     private User userOne;
     private User userTwo;
@@ -72,9 +73,20 @@ public class ChatActivity extends AppCompatActivity {
         ownerName = findViewById(R.id.chat_ownerName);
         recyclerview = findViewById(R.id.chat_list);
         send = findViewById(R.id.send_msg);
+        toolbar = findViewById(R.id.toolbar_chat);
+        toolbar.setNavigationIcon(R.drawable.ic_back_24dp);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         user_one_id = getIntent().getStringExtra("user_one_id");
         user_two_id = getIntent().getStringExtra("user_two_id");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         mAuth = FirebaseAuth.getInstance();
